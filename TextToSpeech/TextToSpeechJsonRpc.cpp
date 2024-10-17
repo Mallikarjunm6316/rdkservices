@@ -140,6 +140,7 @@ uint32_t TextToSpeech::SetACL(const JsonObject& parameters, JsonObject& response
 
     uint32_t TextToSpeech::ListVoices(const JsonObject& parameters, JsonObject& response)
     {
+		try{
         if(_tts) {
             CHECK_TTS_PARAMETER_RETURN_ON_FAIL("language");
             RPC::IStringIterator* voices = nullptr;
@@ -154,6 +155,11 @@ uint32_t TextToSpeech::SetACL(const JsonObject& parameters, JsonObject& response
             voices->Release();
             returnResponse((status == TTS::TTS_OK) ? true : false);
         }
+		}
+		catch(...){
+			TTSLOG_ERROR("TextToSpeech-ListVoices:: caughtt exception");
+			return Core::ERROR_GENERAL;
+		}
         return Core::ERROR_NONE;
     }
 

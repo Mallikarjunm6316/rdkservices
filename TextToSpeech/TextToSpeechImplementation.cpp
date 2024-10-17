@@ -236,6 +236,7 @@ namespace Plugin {
 
     uint32_t TextToSpeechImplementation::ListVoices(const string language,RPC::IStringIterator*& voices) const
     {
+		try{
         CHECK_TTS_MANAGER_RETURN_ON_FAIL();
         std::vector<std::string> voice;
         auto status = TTS::TTS_FAIL;
@@ -248,6 +249,11 @@ namespace Plugin {
 
         voices = (Core::Service<RPC::StringIterator>::Create<RPC::IStringIterator>(voice));
         logResponse(status);
+		}
+		catch(...){
+			TTSLOG_ERROR("TextToSpeechImplementation-ListVoices:: caughtt exception");
+			return Core::ERROR_GENERAL;
+		}
         return (status == TTS::TTS_OK) ? (Core::ERROR_NONE) : (Core::ERROR_GENERAL);
     }
 

@@ -90,6 +90,7 @@ TTS_Error TTSManager::listVoices(std::string language, std::vector<std::string> 
     bool returnCurrentConfiguration = false;
     std::string key = std::string("voice_for_"); // return all voices
 
+	try{
     if(language.empty()) {
         returnCurrentConfiguration = true; // return voice for the configured language
         key = m_defaultConfiguration.language();
@@ -99,6 +100,7 @@ TTS_Error TTSManager::listVoices(std::string language, std::vector<std::string> 
         {
             voices.push_back(m_defaultConfiguration.m_others[key]);
         }
+		TTSLOG_ERROR("TTSManager::listVoices %s", key);
         return TTS_OK;
     }
 
@@ -112,6 +114,11 @@ TTS_Error TTSManager::listVoices(std::string language, std::vector<std::string> 
             ++it;
         }
     }
+	}
+	catch(...){
+		TTSLOG_ERROR("TTSManager::listVoices -- exception caught ");
+		return Core::ERROR_GENERAL;
+		}
 
     return TTS_OK;
 }
